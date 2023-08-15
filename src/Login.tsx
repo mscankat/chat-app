@@ -1,4 +1,15 @@
 export default function Login() {
+  function handleClick() {
+    window.open(
+      getURL,
+      "_blank",
+      "width=600,height=800,popup=yes,left=650,top=100"
+    );
+  }
+  const clientID = process.env.REACT_APP_CLIENT_ID || "";
+  const getURL = new URL("https://github.com/login/oauth/authorize");
+  getURL.searchParams.set("client_id", clientID);
+
   return (
     <>
       <div className="h-screen flex justify-center items-center">
@@ -19,6 +30,10 @@ export default function Login() {
               placeholder="password"
               className="bg-slate-500 rounded-md p-2 mb-6"
             />
+          </div>
+
+          <div onClick={handleClick} className="cursor-pointer">
+            GITHUB
           </div>
         </div>
       </div>
