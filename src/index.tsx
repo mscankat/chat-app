@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./Login";
 import Chat from "./Chat";
 import { RouterProvider } from "react-router-dom";
+import Auth from "./Auth";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/chat",
     element: <Chat />,
+  },
+  {
+    path: "/auth",
+    element: <Auth />,
   },
 ]);
 
