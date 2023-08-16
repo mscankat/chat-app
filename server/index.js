@@ -20,7 +20,7 @@ app.post("/", async (req, res) => {
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
   const tokenUrl = `https://github.com/login/oauth/access_token`;
-
+  const userURL = "https://api.github.com/user";
   const options = {
     method: "POST",
     headers: {
@@ -37,7 +37,16 @@ app.post("/", async (req, res) => {
   const response = await fetch(tokenUrl, options);
   const data = await response.json();
   console.log(data);
-  res.json(data);
+
+  const user = await fetch(userURL, {
+    headers: {
+      Authorization: `Bearer ${data.access_token}`,
+    },
+  });
+  const userData = await user.json();
+  console.log(userData);
+
+  res.json(userData);
 });
 
 app.listen(PORT, () => {

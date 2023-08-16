@@ -16,7 +16,9 @@ export default function Auth() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
-  }).then((data) => console.log(data.json()));
+  })
+    .then((data) => data.json())
+    .then((x) => console.log(x));
 
   return null;
 }
