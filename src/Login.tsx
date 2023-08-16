@@ -1,4 +1,27 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
+  const navigate = useNavigate();
+  const userURL = "https://api.github.com/user";
+
+  function handleStorageChange(e: StorageEvent) {
+    let status;
+    fetch(userURL, {
+      headers: {
+        Authorization: `Bearer ${e.newValue}`,
+      },
+    }).then((response) => {
+      if (response.status == 200) {
+        navigate("/chat");
+      } else {
+        console.log("401");
+      }
+    });
+  }
+  useEffect(() => {
+    window.addEventListener("storage", handleStorageChange);
+  });
   function handleClick() {
     window.open(
       getURL,

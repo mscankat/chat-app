@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 export default function Auth() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
-  localStorage.setItem("code", code || "");
   const postURL = new URL("http://localhost:3001/");
   const body = { code: code };
 
@@ -18,7 +17,8 @@ export default function Auth() {
     body: JSON.stringify(body),
   })
     .then((data) => data.json())
-    .then((x) => console.log(x));
+    .then((x) => localStorage.setItem("token", x))
+    .finally(window.close);
 
   return null;
 }
