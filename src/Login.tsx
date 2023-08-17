@@ -6,7 +6,6 @@ export default function Login() {
   const userURL = "https://api.github.com/user";
 
   function handleStorageChange(e: StorageEvent) {
-    let status;
     fetch(userURL, {
       headers: {
         Authorization: `Bearer ${e.newValue}`,

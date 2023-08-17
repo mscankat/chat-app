@@ -1,7 +1,7 @@
 export default function Chat() {
   return (
     <>
-      <div>asd</div>
+      <div>{localStorage.getItem("token")}</div>
     </>
   );
 }
