@@ -20,7 +20,7 @@ app.post("/", async (req, res) => {
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
   const tokenUrl = `https://github.com/login/oauth/access_token`;
-  const userURL = "https://api.github.com/user";
+
   const options = {
     method: "POST",
     headers: {
