@@ -12,7 +12,6 @@ export default function Chat() {
     .then((res) => res.json())
     .then((data) => {
       setName(data.login);
-      console.log(data.login);
     });
   return (
     <>

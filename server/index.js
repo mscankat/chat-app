@@ -38,16 +38,6 @@ app.post("/", async (req, res) => {
   const data = await response.json();
   console.log(data);
   res.json(data.access_token);
-
-  // const user = await fetch(userURL, {
-  //   headers: {
-  //     Authorization: `Bearer ${data.access_token}`,
-  //   },
-  // });
-  // const userData = await user.json();
-  // console.log(userData);
-
-  // res.json(userData);
 });
 
 app.listen(PORT, () => {
