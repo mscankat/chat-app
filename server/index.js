@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
+const routes = require("./routes");
 
 const io = new Server(server, {
   cors: {
@@ -49,6 +51,21 @@ app.post("/", async (req, res) => {
   const data = await response.json();
   console.log(data);
   res.json(data.access_token);
+});
+
+//database
+app.use("/api", routes);
+
+const connectMongo = async () => {
+  await mongoose.connect(process.env.MONGODB_URI);
+};
+connectMongo();
+const database = mongoose.connection;
+database.on("error", (error) => {
+  console.log("database error", error);
+});
+database.on("connected", () => {
+  console.log("Database Connected");
 });
 
 //socket
