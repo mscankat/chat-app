@@ -1,11 +1,22 @@
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
+
+interface messageType {
+  date?: number;
+  message: string;
+  user: string;
+  _id?: string;
+}
 export default function Chat() {
   const [name, setName] = useState("");
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<messageType[]>([]);
   useEffect(() => {
+    function getMessages(data: messageType[]) {
+      console.log(data);
+      setMessages(data);
+    }
     fetch(userURL, {
       headers: {
         Authorization: "Bearer " + token,
@@ -23,13 +34,14 @@ export default function Chat() {
       setIsConnected(false);
     }
 
-    function incoming(value: string) {
+    function incoming(value: messageType) {
       setMessages((previous) => [...previous, value]);
     }
 
     socket.on("connection", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("get_message", incoming);
+    socket.on("get_messages", getMessages);
 
     return () => {
       socket.off("connection", onConnect);
@@ -43,8 +55,13 @@ export default function Chat() {
 
   function send(e: React.MouseEvent) {
     e.preventDefault();
-    console.log("qwe");
-    socket.emit("chat_message", input, () => {
+    console.log(isConnected);
+    const newMessage: messageType = {
+      date: new Date().valueOf(),
+      message: input,
+      user: name,
+    };
+    socket.emit("chat_message", newMessage, () => {
       console.log("sent");
     });
     setInput("");
@@ -60,9 +77,12 @@ export default function Chat() {
             </div>
             {messages.map((x) => {
               return (
-                <div className="text-left mx-8 my-2 p-1 px-3 mr-auto rounded-xl w-fit bg-slate-300">
-                  <div className="text-sm text-gray-700">{name}</div>
-                  <div className="">{x}</div>
+                <div
+                  key={x._id || x.user + x.message + x.date}
+                  className="text-left mx-8 my-2 p-1 px-3 mr-auto rounded-xl w-fit bg-slate-300"
+                >
+                  <div className="text-sm text-gray-700">{x.user}</div>
+                  <div className="">{x.message}</div>
                 </div>
               );
             })}

@@ -6,6 +6,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 const routes = require("./routes");
+const model = require("./model");
 
 const io = new Server(server, {
   cors: {
@@ -70,9 +71,12 @@ database.on("connected", () => {
 
 //socket
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log(`User Connected: ${socket.id}`);
-
+  socket.emit(
+    "get_messages",
+    await model.aggregate().sort({ date: -1 }).limit(10)
+  );
   socket.on("join_room", (data) => {
     console.log(data);
     socket.join(data);
