@@ -1,10 +1,11 @@
 const express = require("express");
-const app = express();
 const dotenv = require("dotenv");
+dotenv.config();
+const app = express();
 const http = require("http");
-const cors = require("cors");
-const { Server } = require("socket.io");
 const server = http.createServer(app);
+const { Server } = require("socket.io");
+const cors = require("cors");
 
 const io = new Server(server, {
   cors: {
@@ -13,11 +14,12 @@ const io = new Server(server, {
   },
 });
 
-dotenv.config();
+app.get("/", (req, res) => {
+  res.send("qwe");
+});
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const PORT = 3001;
 app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // Allow requests from this origin
@@ -25,10 +27,9 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "*"); // Allow specific headers
   next();
 });
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 app.post("/", async (req, res) => {
+  console.log(req.body);
+
   const code = req.body.code;
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
@@ -50,19 +51,12 @@ app.post("/", async (req, res) => {
   const response = await fetch(tokenUrl, options);
   const data = await response.json();
   console.log(data);
+  console.log(data.access_token);
   res.json(data.access_token);
 });
 
-//socket
-
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
-  socket.on("join_room", (data) => {
-    console.log(data);
-    socket.join(data);
-  });
-
+  console.log("a user connected");
   socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data);
   });
@@ -72,6 +66,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+server.listen(3001, () => {
+  console.log("listening on *:3000");
 });
