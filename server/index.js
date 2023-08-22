@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
+const routes = require("./routes");
+const model = require("./model");
 
 const io = new Server(server, {
   cors: {
@@ -51,22 +54,41 @@ app.post("/", async (req, res) => {
   res.json(data.access_token);
 });
 
+//database
+app.use("/api", routes);
+
+const connectMongo = async () => {
+  await mongoose.connect(process.env.MONGODB_URI);
+};
+connectMongo();
+const database = mongoose.connection;
+database.on("error", (error) => {
+  console.log("database error", error);
+});
+database.on("connected", () => {
+  console.log("Database Connected");
+});
+
 //socket
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log(`User Connected: ${socket.id}`);
+  //send all messages when connected
+  socket.emit(
+    "get_messages",
+    (await model.aggregate().sort({ date: -1 }).limit(10)).reverse()
+  );
 
-  socket.on("join_room", (data) => {
-    console.log(data);
-    socket.join(data);
-  });
-
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
-  });
-  socket.on("chat_message", (data) => {
+  //get messages from client and send the same message to client
+  socket.on("chat_message", async (data) => {
     console.log(data);
     socket.emit("get_message", data);
+    const newMessage = new model({
+      date: data.date,
+      message: data.message,
+      user: data.user,
+    });
+    await newMessage.save();
   });
 });
 
