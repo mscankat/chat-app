@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const http = require("http");
-const cors = require("cors");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 
@@ -25,9 +24,8 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "*"); // Allow specific headers
   next();
 });
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+
+//auth
 app.post("/", async (req, res) => {
   const code = req.body.code;
   const clientId = process.env.CLIENT_ID;
