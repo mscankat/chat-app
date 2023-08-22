@@ -75,7 +75,7 @@ io.on("connection", async (socket) => {
   console.log(`User Connected: ${socket.id}`);
   socket.emit(
     "get_messages",
-    await model.aggregate().sort({ date: -1 }).limit(10)
+    (await model.aggregate().sort({ date: -1 }).limit(10)).reverse()
   );
   socket.on("join_room", (data) => {
     console.log(data);
@@ -85,9 +85,15 @@ io.on("connection", async (socket) => {
   socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data);
   });
-  socket.on("chat_message", (data) => {
+  socket.on("chat_message", async (data) => {
     console.log(data);
     socket.emit("get_message", data);
+    const newMessage = new model({
+      date: data.date,
+      message: data.message,
+      user: data.user,
+    });
+    await newMessage.save();
   });
 });
 
