@@ -76,15 +76,28 @@ export default function Chat() {
               <div className="">{isConnected}</div>
             </div>
             {messages.map((x) => {
-              return (
-                <div
-                  key={x._id || x.user + x.message + x.date}
-                  className="text-left mx-8 my-2 p-1 px-3 mr-auto rounded-xl w-fit bg-slate-300"
-                >
-                  <div className="text-sm text-gray-700">{x.user}</div>
-                  <div className="">{x.message}</div>
-                </div>
-              );
+              if (name === x.user) {
+                return (
+                  <div
+                    key={x._id || x.user + x.message + x.date}
+                    className="text-right mx-8 my-2 p-1 px-3 ml-auto rounded-xl w-fit bg-slate-300"
+                  >
+                    <div className="text-sm text-gray-700">{x.user}</div>
+                    <div className="">{x.message}</div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    key={x._id || x.user + x.message + x.date}
+                    className="text-left mx-8 my-2 p-1 px-3 mr-auto rounded-xl w-fit bg-slate-300"
+                  >
+                    <div className="text-sm text-gray-700">{x.user}</div>
+                    <div className="">{x.message}</div>
+                  </div>
+                );
+              }
+
             })}
           </div>
           <input
