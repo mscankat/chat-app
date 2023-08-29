@@ -71,10 +71,6 @@ export default function Chat() {
       <div className=" h-screen flex items-center justify-center bg-gray-950">
         <div className="bg-gray-900 h-4/5 w-3/6 flex flex-col rounded-lg">
           <div className="flex-1 flex flex-col overflow-auto will-change-scroll">
-            <div className="text-right m-8 p-2 px-3 ml-auto rounded-xl w-fit bg-slate-300">
-              <div className="text-sm text-gray-700">{name}</div>
-              <div className="">{isConnected}</div>
-            </div>
             {messages.map((x) => {
               if (name === x.user) {
                 return (
@@ -97,7 +93,6 @@ export default function Chat() {
                   </div>
                 );
               }
-
             })}
           </div>
           <input
