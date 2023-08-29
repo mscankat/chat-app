@@ -74,10 +74,12 @@ database.on("connected", () => {
 io.on("connection", async (socket) => {
   console.log(`User Connected: ${socket.id}`);
   //send all messages when connected
-  socket.emit(
-    "get_messages",
-    (await model.aggregate().sort({ date: -1 }).limit(10)).reverse()
-  );
+  socket.on("connection", async () => {
+    socket.emit(
+      "get_messages",
+      (await model.aggregate().sort({ date: -1 }).limit(10)).reverse()
+    );
+  });
 
   //get messages from client and send the same message to client
   socket.on("chat_message", async (data) => {

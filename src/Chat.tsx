@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
+import { useNavigate } from "react-router-dom";
 
 interface messageType {
   date?: number;
@@ -12,11 +13,8 @@ export default function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<messageType[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
-    function getMessages(data: messageType[]) {
-      console.log(data);
-      setMessages(data);
-    }
     fetch(userURL, {
       headers: {
         Authorization: "Bearer " + token,
@@ -26,6 +24,10 @@ export default function Chat() {
       .then((data) => {
         setName(data.login);
       });
+    function getMessages(data: messageType[]) {
+      console.log(data);
+      setMessages(data);
+    }
     function onConnect() {
       setIsConnected(true);
     }
@@ -38,7 +40,7 @@ export default function Chat() {
       setMessages((previous) => [...previous, value]);
     }
 
-    socket.on("connection", onConnect);
+    socket.emit("connection", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("get_message", incoming);
     socket.on("get_messages", getMessages);
@@ -46,7 +48,6 @@ export default function Chat() {
     return () => {
       socket.off("connection", onConnect);
       socket.off("disconnect", onDisconnect);
-      // socket.off("foo", onFooEvent);
     };
   }, []);
 
