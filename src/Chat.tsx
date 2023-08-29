@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { socket } from "./socket";
+
 interface messageType {
   date?: number;
   message: string;
@@ -5,11 +8,63 @@ interface messageType {
   _id?: string;
 }
 export default function Chat() {
+  const [name, setName] = useState("");
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<messageType[]>([]);
+  useEffect(() => {
+    function getMessages(data: messageType[]) {
+      console.log(data);
+      setMessages(data);
+    }
+    fetch(userURL, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setName(data.login);
+      });
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    function incoming(value: messageType) {
+      setMessages((previous) => [...previous, value]);
+    }
+
+    socket.on("connection", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("get_message", incoming);
+    socket.on("get_messages", getMessages);
+
+    return () => {
+      socket.off("connection", onConnect);
+      socket.off("disconnect", onDisconnect);
+      // socket.off("foo", onFooEvent);
+    };
+  }, []);
+
   const token = localStorage.getItem("token");
   const userURL = "https://api.github.com/user";
 
   function send(e: React.MouseEvent) {
     e.preventDefault();
+    console.log(isConnected);
+    const newMessage: messageType = {
+      date: new Date().valueOf(),
+      message: input,
+      user: name,
+    };
+    socket.emit("chat_message", newMessage, () => {
+      console.log("sent");
+    });
+    setInput("");
   }
   return (
     <>
@@ -42,6 +97,7 @@ export default function Chat() {
                   </div>
                 );
               }
+
             })}
           </div>
           <input
