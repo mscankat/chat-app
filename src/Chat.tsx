@@ -19,6 +19,9 @@ export default function Chat() {
     fetch(userURL, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
+        if (data.message) {
+          navigate("/");
+        }
         console.log(data);
         setName(data.name);
       });

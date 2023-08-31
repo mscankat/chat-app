@@ -1,27 +1,71 @@
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
+  const [logged, setLogged] = useState(false);
+  const [loading, setLoading] = useState(true);
   const code = searchParams.get("code");
   const postURL = new URL("https://localhost:3001/api");
+  const userURL = new URL("https://localhost:3001/api/user");
   const body = { code: code };
 
-  fetch(postURL, {
-    method: "POST",
-    headers: {
-      Accept: "*/*",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": "true",
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(body),
-  })
-    .then((data) => {
-      return data.json();
-    })
-    .then((x) => localStorage.setItem("token", x))
-    .finally(window.close);
+  const getCookies = async () => {
+    await fetch(postURL, {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+  };
+  const isLoggedIn = async () => {
+    const response = await fetch(userURL, { credentials: "include" });
+    const data = await response.json();
+    if (data.message) {
+      return false;
+    }
+    return true;
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await getCookies();
+        const isLogged = await isLoggedIn();
+        if (!isLogged) {
+          setLogged(false);
+          console.log("you are not logged");
+        } else {
+          setLogged(true);
+          setTimeout(() => {
+            // window.close();
+          }, 2000);
+          console.log("you are logged");
+        }
+      } catch (e) {
+        console.error("error fetching", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-  return null;
+  return loading ? (
+    <>
+      <div>Loading</div>
+    </>
+  ) : logged ? (
+    <>
+      <div>you are being directed</div>
+    </>
+  ) : (
+    <>
+      <div>you are not logged</div>
+    </>
+  );
 }

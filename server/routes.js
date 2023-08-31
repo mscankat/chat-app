@@ -72,7 +72,7 @@ router.post("/", async (req, res) => {
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
   const tokenUrl = `https://github.com/login/oauth/access_token`;
-  console.log(req);
+  console.log(code);
   const options = {
     method: "POST",
     headers: {
