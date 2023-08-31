@@ -65,6 +65,10 @@ export default function Chat() {
     socket.emit("chat_message", newMessage, () => {
       console.log("sent");
     });
+    fetch("https://localhost:3001/api/user", {
+      method: "GET",
+      credentials: "include",
+    });
     setInput("");
   }
   return (
