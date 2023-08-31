@@ -21,18 +21,7 @@ export default function Auth() {
       return data.json();
     })
     .then((x) => localStorage.setItem("token", x))
-    .then((x) =>
-      fetch("https://localhost:3001/api/user", {
-        method: "GET",
-        headers: {
-          Accept: "*/*",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-          "Content-Type": "application/json",
-        },
-      })
-    );
-  // .finally(window.close);
+    .finally(window.close);
 
   return null;
 }

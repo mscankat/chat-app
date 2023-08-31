@@ -14,15 +14,13 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<messageType[]>([]);
   const navigate = useNavigate();
+  const userURL = "https://localhost:3001/api/user";
   useEffect(() => {
-    fetch(userURL, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
+    fetch(userURL, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
-        setName(data.login);
+        console.log(data);
+        setName(data.name);
       });
     function getMessages(data: messageType[]) {
       console.log(data);
@@ -51,11 +49,9 @@ export default function Chat() {
     };
   }, []);
 
-  const token = localStorage.getItem("token");
-  const userURL = "https://api.github.com/user";
-
   function send(e: React.MouseEvent) {
     e.preventDefault();
+
     console.log(isConnected);
     const newMessage: messageType = {
       date: new Date().valueOf(),
@@ -64,10 +60,6 @@ export default function Chat() {
     };
     socket.emit("chat_message", newMessage, () => {
       console.log("sent");
-    });
-    fetch("https://localhost:3001/api/user", {
-      method: "GET",
-      credentials: "include",
     });
     setInput("");
   }
