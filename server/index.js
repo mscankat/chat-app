@@ -84,7 +84,7 @@ io.on("connection", async (socket) => {
   //get messages from client and send the same message to client
   socket.on("chat_message", async (data) => {
     console.log(data);
-    socket.emit("get_message", data);
+    io.emit("get_message", data);
     const newMessage = new model({
       date: data.date,
       message: data.message,
