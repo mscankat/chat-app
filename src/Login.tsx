@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import { useAuth } from "./Context";
-
+import { useNavigate } from "react-router-dom";
 export default function Login() {
   const { isLoggedIn } = useAuth();
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/chat");
+    }
+  }, [isLoggedIn]);
   function handleClick() {
     window.open(
       getURL,
@@ -29,6 +35,7 @@ export default function Login() {
           </div>
           <div className="flex flex-col ">
             <input
+              onChange={() => console.log(isLoggedIn)}
               type="password"
               id="password"
               placeholder="password"
