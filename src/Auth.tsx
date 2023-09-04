@@ -42,7 +42,7 @@ export default function Auth() {
         } else {
           setLogged(true);
           setTimeout(() => {
-            // window.close();
+            window.close();
           }, 2000);
           console.log("you are logged");
         }
@@ -54,18 +54,24 @@ export default function Auth() {
     };
     fetchData();
   }, []);
-
-  return loading ? (
-    <>
-      <div>Loading</div>
-    </>
-  ) : logged ? (
-    <>
-      <div>you are being directed</div>
-    </>
-  ) : (
-    <>
-      <div>you are not logged</div>
-    </>
+  return (
+    <div className="flex justify-center items-center h-screen flex-col gap-5 bg-gray-200">
+      {loading ? (
+        <>
+          <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+          <div>Please Wait</div>
+        </>
+      ) : logged ? (
+        <>
+          <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+          <div>Login successful</div>
+          <div className="">you are being directed</div>
+        </>
+      ) : (
+        <>
+          <div>you are not logged</div>
+        </>
+      )}
+    </div>
   );
 }

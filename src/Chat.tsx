@@ -9,6 +9,7 @@ interface messageType {
   _id?: string;
 }
 export default function Chat() {
+  //tidy up whole component and maybe validate when sending messages
   const [name, setName] = useState("");
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [input, setInput] = useState("");

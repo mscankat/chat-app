@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  //handle navigate when auth succesful
   const navigate = useNavigate();
   const userURL = "https://api.github.com/user";
 
