@@ -14,18 +14,26 @@ export default function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<messageType[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const userURL = "https://localhost:3001/api/user";
   useEffect(() => {
-    fetch(userURL, { credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => {
+    const getCredentials = async () => {
+      try {
+        const response = await fetch(userURL, { credentials: "include" });
+        const data = await response.json();
         if (data.message) {
-          navigate("/");
+          // navigate("/");
         }
         console.log(data);
         setName(data.name);
-      });
+      } catch (e) {
+        console.error("error fetching", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getCredentials();
     function getMessages(data: messageType[]) {
       console.log(data);
       setMessages(data);
@@ -67,7 +75,21 @@ export default function Chat() {
     });
     setInput("");
   }
-  return (
+
+  return loading ? (
+    <div className="flex justify-center items-center h-screen flex-col gap-5 bg-gray-200">
+      <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+    </div>
+  ) : !name ? (
+    <>
+      <div className="flex flex-col justify-center items-center h-screen gap-5 bg-gray-300">
+        <div>You are not logged in. </div>
+        <a href="/" className="underline text-stone-600">
+          Login Page
+        </a>
+      </div>
+    </>
+  ) : (
     <>
       <div className=" h-screen flex items-center justify-center bg-gray-950">
         <div className="bg-gray-900 h-4/5 w-3/6 flex flex-col rounded-lg">
