@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  //handle navigate when auth succesful
   const navigate = useNavigate();
   const userURL = "https://api.github.com/user";
 
@@ -53,7 +54,7 @@ export default function Login() {
               className="bg-slate-500 rounded-md p-2 mb-6"
             />
           </div>
-
+          {/* <a href={getURL.toString()}>github</a> */}
           <div onClick={handleClick} className="cursor-pointer">
             GITHUB
           </div>
