@@ -7,7 +7,7 @@ import Login from "./Login";
 import Chat from "./Chat";
 import { RouterProvider } from "react-router-dom";
 import Auth from "./Auth";
-
+import { AuthProvider } from "./Context";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,7 +26,11 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-root.render(<RouterProvider router={router} />);
+root.render(
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

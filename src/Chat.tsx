@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "./Context";
 
 interface messageType {
   date?: number;
@@ -9,23 +9,20 @@ interface messageType {
   _id?: string;
 }
 export default function Chat() {
+  const { isLoggedIn } = useAuth();
+  console.log(isLoggedIn);
   //tidy up whole component and maybe validate when sending messages
   const [name, setName] = useState("");
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const userURL = "https://localhost:3001/api/user";
   useEffect(() => {
     const getCredentials = async () => {
       try {
         const response = await fetch(userURL, { credentials: "include" });
         const data = await response.json();
-        if (data.message) {
-          // navigate("/");
-        }
-        console.log(data);
         setName(data.name);
       } catch (e) {
         console.error("error fetching", e);
@@ -38,33 +35,18 @@ export default function Chat() {
       console.log(data);
       setMessages(data);
     }
-    function onConnect() {
-      setIsConnected(true);
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-    }
 
     function incoming(value: messageType) {
       setMessages((previous) => [...previous, value]);
     }
 
-    socket.emit("connection", onConnect);
-    socket.on("disconnect", onDisconnect);
+    socket.emit("connection");
     socket.on("get_message", incoming);
     socket.on("get_messages", getMessages);
-
-    return () => {
-      socket.off("connection", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
   }, []);
 
   function send(e: React.MouseEvent) {
     e.preventDefault();
-
-    console.log(isConnected);
     const newMessage: messageType = {
       date: new Date().valueOf(),
       message: input,
@@ -80,7 +62,7 @@ export default function Chat() {
     <div className="flex justify-center items-center h-screen flex-col gap-5 bg-gray-200">
       <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
     </div>
-  ) : !name ? (
+  ) : !isLoggedIn ? (
     <>
       <div className="flex flex-col justify-center items-center h-screen gap-5 bg-gray-300">
         <div>You are not logged in. </div>

@@ -98,7 +98,11 @@ router.post("/", async (req, res) => {
     secure: true,
     // domain: "https://localhost:3000",
   });
-  res.json("cookies");
+  if (accessToken) {
+    res.json("success");
+  } else {
+    res.json("fail");
+  }
 });
 
 // /USER endpoint
@@ -111,6 +115,7 @@ router.get("/user", async (req, res) => {
   if (user) {
     dataToSend = { name: user.login };
   } else {
+    res.status(400);
     dataToSend = { message: "user not logged in" };
   }
   console.log(dataToSend);
