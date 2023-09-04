@@ -43,6 +43,7 @@ export default function Auth() {
           setLogged(true);
           setTimeout(() => {
             window.close();
+            window.opener.location.href = "/chat";
           }, 2000);
           console.log("you are logged");
         }
