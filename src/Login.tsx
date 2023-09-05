@@ -35,7 +35,6 @@ export default function Login() {
           </div>
           <div className="flex flex-col ">
             <input
-              onChange={() => console.log(isLoggedIn)}
               type="password"
               id="password"
               placeholder="password"

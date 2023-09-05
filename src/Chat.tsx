@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 import { useAuth } from "./Context";
-
+// import sendIcon from "./public/send_icon.png";
 interface messageType {
   date?: number;
   message: string;
@@ -45,7 +45,7 @@ export default function Chat() {
     socket.on("get_messages", getMessages);
   }, []);
 
-  function send(e: React.MouseEvent) {
+  function send(e: React.SyntheticEvent) {
     e.preventDefault();
     const newMessage: messageType = {
       date: new Date().valueOf(),
@@ -100,12 +100,20 @@ export default function Chat() {
               }
             })}
           </div>
-          <input
-            onChange={(e) => setInput(e.target.value)}
-            value={input}
-            className=" h-11 bg-slate-200 justify-end rounded-lg px-5 mx-2 mb-3"
-          />
-          <button onClick={send}>Send</button>
+          <form className="flex py-2 bg-gray-700 items-center" onSubmit={send}>
+            <input
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+              className=" h-11 bg-slate-200 justify-end rounded-lg px-5 mx-2  w-full"
+              placeholder="Type here..."
+            />
+            <button
+              className="mr-1 w-10 h-10 bg-white rounded-full"
+              type="submit"
+            >
+              <img className="pl-1 w-7 m-auto" src="/send_icon.png" alt="" />{" "}
+            </button>
+          </form>
         </div>
       </div>
     </>
