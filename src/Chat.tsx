@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { socket } from "./socket";
 import { useAuth } from "./Context";
 // import sendIcon from "./public/send_icon.png";
@@ -13,11 +13,20 @@ export default function Chat() {
   console.log(isLoggedIn);
   //tidy up whole component and maybe validate when sending messages
   const [name, setName] = useState("");
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(true);
   const userURL = "https://localhost:3001/api/user";
+  function scrollToBottom() {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   useEffect(() => {
     const getCredentials = async () => {
       try {
@@ -75,7 +84,10 @@ export default function Chat() {
     <>
       <div className=" h-screen flex items-center justify-center bg-gray-950">
         <div className="bg-gray-900 h-4/5 w-3/6 flex flex-col rounded-lg">
-          <div className="flex-1 flex flex-col overflow-auto will-change-scroll">
+          <div
+            className="flex-1 flex flex-col overflow-auto will-change-scroll scroll-smooth"
+            ref={chatContainerRef}
+          >
             {messages.map((x) => {
               if (name === x.user) {
                 return (
