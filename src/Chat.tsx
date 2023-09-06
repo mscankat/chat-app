@@ -34,9 +34,10 @@ export default function Chat() {
         setName(data.name);
         if (data.name) {
           setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
         }
       } catch (e) {
-        console.log("qweqweqw");
         setIsLoggedIn(false);
         console.error("error fetching", e);
       } finally {

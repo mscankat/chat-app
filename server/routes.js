@@ -89,7 +89,6 @@ router.post("/", async (req, res) => {
 
   const response = await fetch(tokenUrl, options);
   const data = await response.json();
-  // console.log(data);
   const accessToken = data.access_token;
   console.log(accessToken);
   res.cookie("accessToken", accessToken, {
@@ -124,7 +123,6 @@ router.get("/user", async (req, res) => {
 // /signout endpoint
 
 router.get("/signout", async (req, res) => {
-  // res.send({ ok: "ok" });
   res.cookie("accessToken", "").send({ success: "true" });
 });
 

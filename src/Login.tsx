@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useAuth } from "./Context";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
-  console.log("qw");
-
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {

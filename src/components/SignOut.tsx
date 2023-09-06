@@ -12,7 +12,6 @@ export default function SignOut() {
     } catch (e) {
       console.log("log out failed", e);
     } finally {
-      console.log("asd");
       setIsLoggedIn(false);
       navigate("/");
     }
