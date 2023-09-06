@@ -22,27 +22,17 @@ export default function Login() {
 
   return (
     <>
-      <div className="h-screen flex justify-center items-center bg-black">
-        <div className="h-2/5 w-2/6 bg-white rounded-3xl flex flex-col justify-center items-center gap-10">
-          <h2 className="text-5xl justify-start">Login</h2>
-          <div className="flex flex-col  text-center">
-            <input
-              type="text"
-              id="username"
-              placeholder="username"
-              className="bg-slate-500 rounded-md p-2"
-            />
-          </div>
-          <div className="flex flex-col ">
-            <input
-              type="password"
-              id="password"
-              placeholder="password"
-              className="bg-slate-500 rounded-md p-2 mb-6"
-            />
-          </div>
-          <div onClick={handleClick} className="cursor-pointer">
-            GITHUB
+      <div className="h-screen flex justify-center items-center bg-gray-950">
+        <div className="h-2/5 w-2/6 bg-white rounded-3xl flex flex-col justify-center items-center gap-4">
+          <div className="mb-10">
+            <h2 className="text-5xl justify-start mb-10 text-center">Login</h2>
+
+            <div
+              onClick={handleClick}
+              className="cursor-pointer bg-gray-400 text-white w-80 h-12 rounded-md border-b-2 border-gray-600 text-center leading-[3rem] hover:shadow-lg "
+            >
+              Login With GitHub
+            </div>
           </div>
         </div>
       </div>
