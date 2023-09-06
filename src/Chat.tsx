@@ -3,6 +3,7 @@ import { socket } from "./socket";
 import { useAuth } from "./Context";
 import Message from "./components/Message";
 import InputForm from "./components/InputForm";
+import SignOut from "./components/SignOut";
 interface messageType {
   date?: number;
   message: string;
@@ -31,11 +32,15 @@ export default function Chat() {
         const response = await fetch(userURL, { credentials: "include" });
         const data = await response.json();
         setName(data.name);
+        if (data.name) {
+          setIsLoggedIn(true);
+        }
       } catch (e) {
+        console.log("qweqweqw");
+        setIsLoggedIn(false);
         console.error("error fetching", e);
       } finally {
         setLoading(false);
-        setIsLoggedIn(true);
       }
     };
     getCredentials();
@@ -69,9 +74,7 @@ export default function Chat() {
     <>
       <div className="absolute right-0 text-gray-950 m-3 p-2 bg-gray-300 rounded-md">
         Logged in as: "{name}"
-        <div className="text-center pt-1 text-gray-700 cursor-pointer">
-          Sign out
-        </div>
+        <SignOut />
       </div>
 
       <div className=" h-screen flex flex-col items-center justify-center bg-gray-950">

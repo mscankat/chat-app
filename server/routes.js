@@ -96,7 +96,6 @@ router.post("/", async (req, res) => {
     httpOnly: true,
     sameSite: "none",
     secure: true,
-    // domain: "https://localhost:3000",
   });
   if (accessToken) {
     res.json("success");
@@ -120,6 +119,13 @@ router.get("/user", async (req, res) => {
   }
   console.log(dataToSend);
   res.send(dataToSend);
+});
+
+// /signout endpoint
+
+router.get("/signout", async (req, res) => {
+  // res.send({ ok: "ok" });
+  res.cookie("accessToken", "").send({ success: "true" });
 });
 
 module.exports = router;
