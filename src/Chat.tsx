@@ -11,7 +11,6 @@ interface messageType {
 }
 export default function Chat() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
-  //tidy up whole component and maybe validate when sending messages
   const [name, setName] = useState("");
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<messageType[]>([]);
@@ -68,7 +67,14 @@ export default function Chat() {
     </>
   ) : (
     <>
-      <div className=" h-screen flex items-center justify-center bg-gray-950">
+      <div className="absolute right-0 text-gray-950 m-3 p-2 bg-gray-300 rounded-md">
+        Logged in as: "{name}"
+        <div className="text-center pt-1 text-gray-700 cursor-pointer">
+          Sign out
+        </div>
+      </div>
+
+      <div className=" h-screen flex flex-col items-center justify-center bg-gray-950">
         <div className="bg-gray-900 h-4/5 w-3/6 flex flex-col rounded-lg">
           <div
             className="flex-1 flex flex-col overflow-auto will-change-scroll scroll-smooth"
