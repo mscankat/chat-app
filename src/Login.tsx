@@ -1,13 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "./Context";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
   const { isLoggedIn } = useAuth();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const userURL = new URL("https://localhost:3001/api/user");
+
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/chat");
-    }
+    const getCredentials = async () => {
+      try {
+        const response = await fetch(userURL, { credentials: "include" });
+        const data = await response.json();
+        if (data.name) {
+          navigate("/chat");
+        }
+      } catch (e) {
+        console.error("error fetching", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getCredentials();
   }, [isLoggedIn]);
   function handleClick() {
     window.open(
@@ -20,7 +34,11 @@ export default function Login() {
   const getURL = new URL("https://github.com/login/oauth/authorize");
   getURL.searchParams.set("client_id", clientID);
 
-  return (
+  return loading ? (
+    <div className="flex justify-center items-center h-screen flex-col gap-5 bg-gray-200">
+      <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+    </div>
+  ) : (
     <>
       <div className="h-screen flex justify-center items-center bg-gray-950">
         <div className="h-2/5 w-2/6 bg-white rounded-3xl flex flex-col justify-center items-center gap-4">

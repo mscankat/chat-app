@@ -8,18 +8,15 @@ import React, {
   useState,
 } from "react";
 
-// Define the types for the context values
 interface AuthContextType {
   isLoggedIn: boolean;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
 }
 
-// Create a context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Create a provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Initialize with the appropriate default value
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const userURL = new URL("https://localhost:3001/api/user");
   useEffect(() => {
     const getCredentials = async () => {
@@ -44,7 +41,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook to access the authentication context
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
