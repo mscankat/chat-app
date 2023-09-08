@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./Context";
 import { useNavigate } from "react-router-dom";
+import Loading from "./components/Loading";
 export default function Login() {
   const { isLoggedIn } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -35,9 +36,7 @@ export default function Login() {
   getURL.searchParams.set("client_id", clientID);
 
   return loading ? (
-    <div className="flex justify-center items-center h-screen flex-col gap-5 bg-gray-200">
-      <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-    </div>
+    <Loading />
   ) : (
     <>
       <div className="h-screen flex justify-center items-center bg-gray-950">

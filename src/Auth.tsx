@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "./Context";
+import Loading from "./components/Loading";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
@@ -46,10 +47,7 @@ export default function Auth() {
   return (
     <div className="flex justify-center items-center h-screen flex-col gap-5 bg-gray-200">
       {loading ? (
-        <>
-          <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-          <div>Please Wait</div>
-        </>
+        <Loading />
       ) : isLoggedIn ? (
         <>
           <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
