@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../utils/Context";
 import Loading from "../../components/Loading";
 
-export default function Auth() {
-  const [searchParams] = useSearchParams();
+export default function Auth({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const [loading, setLoading] = useState(true);
-  const code = searchParams.get("code");
-  const postURL = new URL(`${process.env.REACT_APP_SERVER_HOST}/api`);
+  const code = searchParams["code"];
+  const postURL = new URL(`${process.env.NEXT_PUBLIC_SERVER_HOST}/api`);
   const body = { code: code };
 
   const { isLoggedIn, setIsLoggedIn } = useAuth();
