@@ -4,6 +4,8 @@ import { useAuth } from "./Context";
 import Message from "./components/Message";
 import InputForm from "./components/InputForm";
 import SignOut from "./components/SignOut";
+import Loading from "./components/Loading";
+import NotLoggedIn from "./components/NotLoggedIn";
 interface messageType {
   date?: number;
   message: string;
@@ -59,25 +61,12 @@ export default function Chat() {
   }, []);
 
   return loading ? (
-    <div className="flex justify-center items-center h-screen flex-col gap-5 bg-gray-200">
-      <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-    </div>
+    <Loading />
   ) : !isLoggedIn ? (
-    <>
-      <div className="flex flex-col justify-center items-center h-screen gap-5 bg-gray-300">
-        <div>You are not logged in. </div>
-        <a href="/" className="underline text-stone-600">
-          Login Page
-        </a>
-      </div>
-    </>
+    <NotLoggedIn />
   ) : (
     <>
-      <div className="absolute right-0 text-gray-950 m-3 p-2 bg-gray-300 rounded-md">
-        Logged in as: "{name}"
-        <SignOut />
-      </div>
-
+      <SignOut name={name} />
       <div className=" h-screen flex flex-col items-center justify-center bg-gray-950">
         <div className="bg-gray-900 h-4/5 w-3/6 flex flex-col rounded-lg">
           <div
