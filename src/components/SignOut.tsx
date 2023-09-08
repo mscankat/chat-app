@@ -3,10 +3,13 @@ import { useAuth } from "../Context";
 export default function SignOut({ name }: { name: string }) {
   const { setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const signOutURL = new URL(
+    `${process.env.REACT_APP_SERVER_HOST}/api/signout`
+  );
   const signOut = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      await fetch("https://localhost:3001/api/signout", {
+      await fetch(signOutURL, {
         credentials: "include",
       });
     } catch (e) {

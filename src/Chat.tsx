@@ -18,7 +18,7 @@ export default function Chat() {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(true);
-  const userURL = "https://localhost:3001/api/user";
+  const userURL = new URL(`${process.env.REACT_APP_SERVER_HOST}/api/user`);
   function scrollToBottom() {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =

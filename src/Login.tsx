@@ -6,7 +6,7 @@ export default function Login() {
   const { isLoggedIn } = useAuth();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const userURL = new URL("https://localhost:3001/api/user");
+  const userURL = new URL(`${process.env.REACT_APP_SERVER_HOST}/api/user`);
 
   useEffect(() => {
     const getCredentials = async () => {

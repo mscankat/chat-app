@@ -1,4 +1,4 @@
 import { io } from "socket.io-client";
 
-const URL = "https://localhost:3001/";
+const URL = process.env.REACT_APP_SERVER_HOST;
 export const socket = io(URL);

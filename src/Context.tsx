@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const userURL = new URL("https://localhost:3001/api/user");
+  const userURL = new URL(`${process.env.REACT_APP_SERVER_HOST}/api/user`);
   useEffect(() => {
     const getCredentials = async () => {
       try {

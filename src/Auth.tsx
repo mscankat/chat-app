@@ -7,7 +7,7 @@ export default function Auth() {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const code = searchParams.get("code");
-  const postURL = new URL("https://localhost:3001/api");
+  const postURL = new URL(`${process.env.REACT_APP_SERVER_HOST}/api`);
   const body = { code: code };
 
   const { isLoggedIn, setIsLoggedIn } = useAuth();
