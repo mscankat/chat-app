@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../utils/Context";
 export default function SignOut({ name }: { name: string }) {
   const { setIsLoggedIn } = useAuth();
   const router = useRouter();
   const signOutURL = new URL(
-    `${process.env.REACT_APP_SERVER_HOST}/api/signout`
+    `${process.env.NEXT_PUBLIC_SERVER_HOST}/api/signout`
   );
   const signOut = async (e: React.MouseEvent) => {
     e.preventDefault();

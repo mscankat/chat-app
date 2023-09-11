@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../utils/Context";
 import Loading from "../../components/Loading";
@@ -28,8 +29,8 @@ export default function Auth({
           credentials: "include",
           body: JSON.stringify(body),
         });
-
-        const data = await response.json();
+        const data = await response.text();
+        console.log(data);
         if (data === "success") {
           setIsLoggedIn(true);
           setTimeout(() => {

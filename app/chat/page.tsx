@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useRef } from "react";
 import { socket } from "../../utils/socket";
 import { useAuth } from "../../utils/Context";
@@ -18,7 +19,7 @@ export default function Chat() {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(true);
-  const userURL = new URL(`${process.env.REACT_APP_SERVER_HOST}/api/user`);
+  const userURL = new URL(`${process.env.NEXT_PUBLIC_SERVER_HOST}/api/user`);
   function scrollToBottom() {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =

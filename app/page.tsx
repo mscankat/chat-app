@@ -32,7 +32,7 @@ export default function Login() {
       "width=600,height=800,popup=yes,left=650,top=100"
     );
   }
-  const clientID = process.env.REACT_APP_CLIENT_ID || "";
+  const clientID = process.env.NEXT_PUBLIC_CLIENT_ID || "";
   const getURL = new URL("https://github.com/login/oauth/authorize");
   getURL.searchParams.set("client_id", clientID);
 
