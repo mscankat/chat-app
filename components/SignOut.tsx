@@ -21,7 +21,7 @@ export default function SignOut({ name }: { name: string }) {
   };
   return (
     <div className="absolute right-0 text-gray-950 m-3 p-2 bg-gray-300 rounded-md">
-      Logged in as: "{name}"
+      Logged in as: `{name}`
       <button
         onClick={signOut}
         className="text-center pt-1 text-gray-700 cursor-pointer block w-full"
