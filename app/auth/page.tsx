@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../utils/Context";
 import Loading from "../../components/Loading";
-
 export default function Auth({
   searchParams,
 }: {
