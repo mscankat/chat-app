@@ -1,12 +1,13 @@
+"use client";
 import { useEffect, useState } from "react";
-import { useAuth } from "./Context";
-import { useNavigate } from "react-router-dom";
-import Loading from "./components/Loading";
+import { useAuth } from "@/utils/Context";
+import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
 export default function Login() {
   const { isLoggedIn } = useAuth();
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const userURL = new URL(`${process.env.REACT_APP_SERVER_HOST}/api/user`);
+  const userURL = new URL(`${process.env.NEXT_PUBLIC_SERVER_HOST}/api/user`);
+  const router = useRouter();
 
   useEffect(() => {
     const getCredentials = async () => {
@@ -14,7 +15,7 @@ export default function Login() {
         const response = await fetch(userURL, { credentials: "include" });
         const data = await response.json();
         if (data.name) {
-          navigate("/chat");
+          router.push("/chat");
         }
       } catch (e) {
         console.error("error fetching", e);
@@ -31,7 +32,7 @@ export default function Login() {
       "width=600,height=800,popup=yes,left=650,top=100"
     );
   }
-  const clientID = process.env.REACT_APP_CLIENT_ID || "";
+  const clientID = process.env.NEXT_PUBLIC_CLIENT_ID || "";
   const getURL = new URL("https://github.com/login/oauth/authorize");
   getURL.searchParams.set("client_id", clientID);
 
@@ -42,7 +43,9 @@ export default function Login() {
       <div className="h-screen flex justify-center items-center bg-gray-950">
         <div className="h-2/5 w-2/6 bg-white rounded-3xl flex flex-col justify-center items-center gap-4">
           <div className="mb-10">
-            <h2 className="text-5xl justify-start mb-10 text-center">Login</h2>
+            <h2 className="text-5xl justify-start mb-10 text-center text-gray-950">
+              Login
+            </h2>
 
             <div
               onClick={handleClick}

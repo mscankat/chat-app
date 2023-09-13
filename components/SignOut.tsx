@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Context";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../utils/Context";
 export default function SignOut({ name }: { name: string }) {
   const { setIsLoggedIn } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const signOutURL = new URL(
-    `${process.env.REACT_APP_SERVER_HOST}/api/signout`
+    `${process.env.NEXT_PUBLIC_SERVER_HOST}/api/signout`
   );
   const signOut = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -16,12 +16,12 @@ export default function SignOut({ name }: { name: string }) {
       console.log("log out failed", e);
     } finally {
       setIsLoggedIn(false);
-      navigate("/");
+      router.push("/");
     }
   };
   return (
     <div className="absolute right-0 text-gray-950 m-3 p-2 bg-gray-300 rounded-md">
-      Logged in as: "{name}"
+      Logged in as: `{name}`
       <button
         onClick={signOut}
         className="text-center pt-1 text-gray-700 cursor-pointer block w-full"
