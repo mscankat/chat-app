@@ -18,23 +18,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const userURL = new URL(`${process.env.NEXT_PUBLIC_SERVER_HOST}/api/user`);
-  // useEffect(() => {
-  //   const getCredentials = async () => {
-  //     try {
-  //       const response = await fetch(userURL, { credentials: "include" });
-  //       const data = await response.json();
-  //       if (data.name) {
-  //         setIsLoggedIn(true);
-  //       } else {
-  //         setIsLoggedIn(false);
-  //       }
-  //     } catch (e) {
-  //       console.error("error fetching", e);
-  //     }
-  //   };
-  //   getCredentials();
-  // }, []);
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       {children}
