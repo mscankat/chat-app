@@ -55,7 +55,7 @@ export default function Auth({
         <>
           <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
           <div>Login successful</div>
-          <div className="">you are being directed</div>
+          <div>you are being directed</div>
         </>
       ) : (
         <>

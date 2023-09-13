@@ -26,7 +26,7 @@ export default function InputForm({ name }: { name: string }) {
       <input
         onChange={(e) => setInput(e.target.value)}
         value={input}
-        className=" h-11 bg-slate-200 justify-end rounded-lg px-5 mx-2  w-full"
+        className=" h-11 bg-slate-200 justify-end rounded-lg px-5 mx-2  w-full text-black"
         placeholder="Type here..."
       />
       <button className="mr-1 w-10 h-10 bg-white rounded-full" type="submit">
