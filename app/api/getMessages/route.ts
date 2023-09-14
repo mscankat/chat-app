@@ -23,5 +23,5 @@ export async function GET(req: Request) {
     .limit(limit);
 
   console.log(dataToSend);
-  return new Response(JSON.stringify(dataToSend.reverse()));
+  return new Response(JSON.stringify(dataToSend));
 }
