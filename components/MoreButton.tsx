@@ -2,10 +2,16 @@
 
 import { useEffect } from "react";
 
-export default function MoreButton({ messageRef }: { messageRef: any }) {
+export default function MoreButton({
+  messageRef,
+  fetchMore,
+}: {
+  messageRef: any;
+  fetchMore: any;
+}) {
   const observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting) {
-      console.log("qwe");
+      //   fetchMore(20, 20);
     }
   });
   useEffect(() => {

@@ -22,14 +22,24 @@ export default function Chat() {
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(true);
   const userURL = new URL(`${process.env.NEXT_PUBLIC_SERVER_HOST}/api/user`);
+  const getURL = new URL(
+    `${process.env.NEXT_PUBLIC_SERVER_HOST}/api/getMessages`
+  );
+  getURL.searchParams.set("skip", messages.length.toString());
+
   function scrollToBottom() {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
   }
+  async function fetchMore(skip: number, limit: number) {
+    const response = await fetch(getURL);
+    const data = await response.json();
+    setMessages((previous) => [...data, ...previous]);
+  }
   useEffect(() => {
-    scrollToBottom();
+    // scrollToBottom();
   }, [messages]);
   useEffect(() => {
     const getCredentials = async () => {
@@ -72,32 +82,38 @@ export default function Chat() {
       <SignOut name={name} />
       <div className=" h-screen flex flex-col items-center justify-center bg-gray-950">
         <div className="bg-gray-900 h-4/5 w-3/6 flex flex-col rounded-lg">
-          <MoreButton messageRef={messageRef} />
+          <div onClick={() => fetchMore(0, 0)}>
+            <MoreButton messageRef={messageRef} fetchMore={fetchMore} />
+          </div>
           <div
             className="flex-1 flex flex-col overflow-auto will-change-scroll scroll-smooth"
             ref={chatContainerRef}
           >
-            <div ref={messageRef}>
+            {/* <div ref={messageRef}>
               <Message isOwn={false} user={"qwe"} message={"ref"} />
-            </div>
+            </div> */}
             {messages.map((x) => {
               if (name === x.user) {
                 return (
-                  <Message
-                    isOwn={true}
-                    user={x.user}
-                    message={x.message + messages.indexOf(x)}
-                    key={x._id || x.user + x.message + x.date}
-                  />
+                  <div ref={messages.indexOf(x) === 5 ? messageRef : null}>
+                    <Message
+                      isOwn={true}
+                      user={x.user}
+                      message={x.message + messages.indexOf(x)}
+                      key={x._id || x.user + x.message + x.date}
+                    />
+                  </div>
                 );
               } else {
                 return (
-                  <Message
-                    isOwn={false}
-                    user={x.user}
-                    message={x.message}
-                    key={x._id || x.user + x.message + x.date}
-                  />
+                  <div ref={messages.indexOf(x) === 5 ? messageRef : null}>
+                    <Message
+                      isOwn={false}
+                      user={x.user}
+                      message={x.message}
+                      key={x._id || x.user + x.message + x.date}
+                    />
+                  </div>
                 );
               }
             })}
