@@ -86,7 +86,7 @@ export default function Chat() {
                   <Message
                     isOwn={true}
                     user={x.user}
-                    message={x.message}
+                    message={x.message + messages.indexOf(x)}
                     key={x._id || x.user + x.message + x.date}
                   />
                 );
