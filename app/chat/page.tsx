@@ -7,6 +7,7 @@ import InputForm from "../../components/InputForm";
 import SignOut from "../../components/SignOut";
 import Loading from "../../components/Loading";
 import NotLoggedIn from "../../components/NotLoggedIn";
+import MoreButton from "@/components/MoreButton";
 interface messageType {
   date?: number;
   message: string;
@@ -17,6 +18,7 @@ export default function Chat() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [name, setName] = useState("");
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const messageRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(true);
   const userURL = new URL(`${process.env.NEXT_PUBLIC_SERVER_HOST}/api/user`);
@@ -70,10 +72,14 @@ export default function Chat() {
       <SignOut name={name} />
       <div className=" h-screen flex flex-col items-center justify-center bg-gray-950">
         <div className="bg-gray-900 h-4/5 w-3/6 flex flex-col rounded-lg">
+          <MoreButton messageRef={messageRef} />
           <div
             className="flex-1 flex flex-col overflow-auto will-change-scroll scroll-smooth"
             ref={chatContainerRef}
           >
+            <div ref={messageRef}>
+              <Message isOwn={false} user={"qwe"} message={"ref"} />
+            </div>
             {messages.map((x) => {
               if (name === x.user) {
                 return (
