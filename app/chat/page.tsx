@@ -9,7 +9,7 @@ import Loading from "../../components/Loading";
 import NotLoggedIn from "../../components/NotLoggedIn";
 import MoreButton from "@/components/MoreButton";
 interface messageType {
-  date?: number;
+  date: number;
   message: string;
   user: string;
   _id?: string;
@@ -123,7 +123,8 @@ export default function Chat() {
                     <Message
                       isOwn={true}
                       user={x.user}
-                      message={x.message + " " + messages.indexOf(x)}
+                      message={x.message}
+                      date={x.date}
                     />
                   </div>
                 );
@@ -137,7 +138,12 @@ export default function Chat() {
                         : null
                     }
                   >
-                    <Message isOwn={false} user={x.user} message={x.message} />
+                    <Message
+                      isOwn={false}
+                      user={x.user}
+                      message={x.message}
+                      date={x.date}
+                    />
                   </div>
                 );
               }
