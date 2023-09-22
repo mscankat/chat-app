@@ -28,5 +28,5 @@ export default function MoreButton({
     };
   }, [messages, messageRef]);
 
-  return <div className="text-white m-auto py-2 absolute">More</div>;
+  return <></>;
 }
