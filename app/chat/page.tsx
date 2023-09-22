@@ -34,13 +34,7 @@ export default function Chat() {
         chatContainerRef.current.scrollHeight;
     }
   }
-  // function More() {
-  //   if (chatContainerRef.current) {
-  //     if (chatContainerRef.current.scrollTop === 0) {
-  //       fetchMore(0, 0);
-  //     }
-  //   }
-  // }
+
   async function fetchMore(skip: number, limit: number) {
     const response = await fetch(getURL);
     const data = await response.json();
@@ -48,10 +42,9 @@ export default function Chat() {
     setDisplayedMessages((prev) => prev + data.length);
     console.log(messageRef);
   }
-  useEffect(() => {
-    // More();
-    // scrollToBottom();
-  }, [messages]);
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [messages]);
   useEffect(() => {
     const getCredentials = async () => {
       try {
@@ -79,6 +72,7 @@ export default function Chat() {
     function incoming(value: messageType) {
       setMessages((previous) => [value, ...previous]);
       setDisplayedMessages((previous) => previous + 1);
+      // scrollToBottom();
     }
 
     socket.emit("connection");
@@ -149,7 +143,7 @@ export default function Chat() {
               }
             })}
           </div>
-          <InputForm name={name} />
+          <InputForm scrollToBottom={scrollToBottom} name={name} />
         </div>
       </div>
     </>

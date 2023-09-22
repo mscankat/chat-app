@@ -6,7 +6,13 @@ interface messageType {
   user: string;
   _id?: string;
 }
-export default function InputForm({ name }: { name: string }) {
+export default function InputForm({
+  name,
+  scrollToBottom,
+}: {
+  name: string;
+  scrollToBottom: () => void;
+}) {
   const [input, setInput] = useState("");
 
   function send(e: React.SyntheticEvent) {
@@ -20,6 +26,7 @@ export default function InputForm({ name }: { name: string }) {
       console.log("sent");
     });
     setInput("");
+    scrollToBottom();
   }
   return (
     <form className="flex py-2 bg-gray-700 items-center" onSubmit={send}>
