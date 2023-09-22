@@ -77,7 +77,7 @@ export default function Chat() {
     }
 
     function incoming(value: messageType) {
-      setMessages((previous) => [...previous, value]);
+      setMessages((previous) => [value, ...previous]);
       setDisplayedMessages((previous) => previous + 1);
     }
 
