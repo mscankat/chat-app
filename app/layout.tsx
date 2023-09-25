@@ -18,7 +18,11 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={inter.className + " text-black"}>{children}</body>
+        <body className={inter.className + " text-black"}>
+          <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+          <script src="main.js"></script>
+          {children}
+        </body>
       </html>
     </AuthProvider>
   );
