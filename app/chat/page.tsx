@@ -65,23 +65,23 @@ export default function Chat() {
       }
     };
     getCredentials();
-    function getMessages(data: messageType[]) {
-      setMessages(data);
-      setDisplayedMessages(data.length);
-    }
+    fetchMore(0, 10);
+    // function getMessages(data: messageType[]) {
+    //   setMessages(data);
+    //   setDisplayedMessages(data.length);
+    // }
 
-    function incoming(value: messageType) {
-      setMessages((previous) => [value, ...previous]);
-      setDisplayedMessages((previous) => previous + 1);
-      // scrollToBottom();
-    }
+    // function incoming(value: messageType) {
+    //   setMessages((previous) => [value, ...previous]);
+    //   setDisplayedMessages((previous) => previous + 1);
+    //   // scrollToBottom();
+    // }
     const pusher = new Pusher(process.env.NEXT_PUBLIC_key || "", {
       cluster: "eu",
     });
     const channel = pusher.subscribe("chat");
 
     channel.bind("chat-event", function (data: any) {
-      console.log(typeof data);
       setMessages((previous) => [
         {
           message: data.message,
