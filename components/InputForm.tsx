@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { socket } from "../utils/socket";
+// import { socket } from "../utils/socket";
 interface messageType {
   date?: number;
   message: string;
@@ -22,9 +22,9 @@ export default function InputForm({
       message: input,
       user: name,
     };
-    socket.emit("chat_message", newMessage, () => {
-      console.log("sent");
-    });
+    // socket.emit("chat_message", newMessage, () => {
+    //   console.log("sent");
+    // });
     setInput("");
     scrollToBottom();
   }

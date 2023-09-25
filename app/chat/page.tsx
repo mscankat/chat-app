@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { socket } from "../../utils/socket";
+// import { socket } from "../../utils/socket";
+import Pusher from "pusher-js";
 import { useAuth } from "../../utils/Context";
 import Message from "../../components/Message";
 import InputForm from "../../components/InputForm";
@@ -74,10 +75,34 @@ export default function Chat() {
       setDisplayedMessages((previous) => previous + 1);
       // scrollToBottom();
     }
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_key || "", {
+      cluster: "eu",
+    });
+    const channel = pusher.subscribe("chat");
 
-    socket.emit("connection");
-    socket.on("get_message", incoming);
-    socket.on("get_messages", getMessages);
+    channel.bind("chat-event", function (data: any) {
+      setMessages((previous) => [
+        {
+          message: data.message,
+          user: data.sender,
+          date: new Date().valueOf(),
+        },
+        ...previous,
+      ]);
+      setDisplayedMessages((previous) => previous + 1);
+      // setChats((prevState) => [
+      //   ...prevState,
+      //   { sender: data.sender, message: data.message },
+      // ]);
+    });
+
+    return () => {
+      pusher.unsubscribe("chat");
+    };
+
+    // socket.emit("connection");
+    // socket.on("get_message", incoming);
+    // socket.on("get_messages", getMessages);
   }, []);
 
   return loading ? (
