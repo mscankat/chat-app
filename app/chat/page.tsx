@@ -81,11 +81,12 @@ export default function Chat() {
     const channel = pusher.subscribe("chat");
 
     channel.bind("chat-event", function (data: any) {
+      console.log(typeof data);
       setMessages((previous) => [
         {
           message: data.message,
-          user: data.sender,
-          date: new Date().valueOf(),
+          user: data.user,
+          date: data.date,
         },
         ...previous,
       ]);

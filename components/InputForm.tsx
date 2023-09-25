@@ -14,6 +14,7 @@ export default function InputForm({
   scrollToBottom: () => void;
 }) {
   const [input, setInput] = useState("");
+  const postUrl = process.env.NEXT_PUBLIC_SERVER_HOST + "/api/pusher";
 
   function send(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -22,6 +23,10 @@ export default function InputForm({
       message: input,
       user: name,
     };
+    fetch(postUrl, {
+      method: "POST",
+      body: JSON.stringify(newMessage),
+    });
     // socket.emit("chat_message", newMessage, () => {
     //   console.log("sent");
     // });
