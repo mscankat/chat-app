@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { socket } from "../../utils/socket";
+import Pusher from "pusher-js";
 import { useAuth } from "../../utils/Context";
 import Message from "../../components/Message";
 import InputForm from "../../components/InputForm";
@@ -42,9 +42,7 @@ export default function Chat() {
     setDisplayedMessages((prev) => prev + data.length);
     console.log(messageRef);
   }
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages]);
+
   useEffect(() => {
     const getCredentials = async () => {
       try {
@@ -64,20 +62,26 @@ export default function Chat() {
       }
     };
     getCredentials();
-    function getMessages(data: messageType[]) {
-      setMessages(data);
-      setDisplayedMessages(data.length);
-    }
+    fetchMore(0, 10);
 
-    function incoming(value: messageType) {
-      setMessages((previous) => [value, ...previous]);
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_key || "", {
+      cluster: "eu",
+    });
+    const channel = pusher.subscribe("chat");
+    channel.bind("chat-event", function (data: any) {
+      setMessages((previous) => [
+        {
+          message: data.message,
+          user: data.user,
+          date: data.date,
+        },
+        ...previous,
+      ]);
       setDisplayedMessages((previous) => previous + 1);
-      // scrollToBottom();
-    }
-
-    socket.emit("connection");
-    socket.on("get_message", incoming);
-    socket.on("get_messages", getMessages);
+    });
+    return () => {
+      pusher.unsubscribe("chat");
+    };
   }, []);
 
   return loading ? (
@@ -100,9 +104,6 @@ export default function Chat() {
             className="flex-1 flex flex-col-reverse overflow-auto will-change-scroll scroll-smooth"
             ref={chatContainerRef}
           >
-            {/* <div ref={messageRef}>
-              <Message isOwn={false} user={"qwe"} message={"ref"} />
-            </div> */}
             {messages.map((x, index) => {
               if (name === x.user) {
                 return (
