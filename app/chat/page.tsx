@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-// import { socket } from "../../utils/socket";
 import Pusher from "pusher-js";
 import { useAuth } from "../../utils/Context";
 import Message from "../../components/Message";
@@ -43,9 +42,7 @@ export default function Chat() {
     setDisplayedMessages((prev) => prev + data.length);
     console.log(messageRef);
   }
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages]);
+
   useEffect(() => {
     const getCredentials = async () => {
       try {
@@ -66,21 +63,11 @@ export default function Chat() {
     };
     getCredentials();
     fetchMore(0, 10);
-    // function getMessages(data: messageType[]) {
-    //   setMessages(data);
-    //   setDisplayedMessages(data.length);
-    // }
 
-    // function incoming(value: messageType) {
-    //   setMessages((previous) => [value, ...previous]);
-    //   setDisplayedMessages((previous) => previous + 1);
-    //   // scrollToBottom();
-    // }
     const pusher = new Pusher(process.env.NEXT_PUBLIC_key || "", {
       cluster: "eu",
     });
     const channel = pusher.subscribe("chat");
-
     channel.bind("chat-event", function (data: any) {
       setMessages((previous) => [
         {
@@ -91,19 +78,10 @@ export default function Chat() {
         ...previous,
       ]);
       setDisplayedMessages((previous) => previous + 1);
-      // setChats((prevState) => [
-      //   ...prevState,
-      //   { sender: data.sender, message: data.message },
-      // ]);
     });
-
     return () => {
       pusher.unsubscribe("chat");
     };
-
-    // socket.emit("connection");
-    // socket.on("get_message", incoming);
-    // socket.on("get_messages", getMessages);
   }, []);
 
   return loading ? (
@@ -126,9 +104,6 @@ export default function Chat() {
             className="flex-1 flex flex-col-reverse overflow-auto will-change-scroll scroll-smooth"
             ref={chatContainerRef}
           >
-            {/* <div ref={messageRef}>
-              <Message isOwn={false} user={"qwe"} message={"ref"} />
-            </div> */}
             {messages.map((x, index) => {
               if (name === x.user) {
                 return (
