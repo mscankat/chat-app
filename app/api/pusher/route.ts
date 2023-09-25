@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import Pusher from "pusher";
+import { connectDB } from "@/utils/connectDB";
+import model from "@/utils/model";
 
 export const pusher = new Pusher({
   appId: process.env.NEXT_PUBLIC_app_id || "",
@@ -18,6 +20,13 @@ export async function POST(req: Request) {
     user,
     date,
   });
+  await connectDB();
+  const newMessage = new model({
+    date: date,
+    message: message,
+    user: user,
+  });
+  await newMessage.save();
 
   return NextResponse.json({ message: "completed" });
 }
