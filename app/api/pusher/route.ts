@@ -3,7 +3,7 @@ import Pusher from "pusher";
 import { connectDB } from "@/utils/connectDB";
 import model from "@/utils/model";
 
-export const pusher = new Pusher({
+const pusher = new Pusher({
   appId: process.env.NEXT_PUBLIC_app_id || "",
   key: process.env.NEXT_PUBLIC_key || "",
   secret: process.env.NEXT_PUBLIC_secret || "",
