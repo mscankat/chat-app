@@ -18,7 +18,6 @@ export default function InputForm({
   function send(e: React.SyntheticEvent) {
     e.preventDefault();
     const newMessage: messageType = {
-      date: new Date().valueOf(),
       message: input,
       user: name,
     };

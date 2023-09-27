@@ -12,9 +12,9 @@ const pusher = new Pusher({
 });
 
 export async function POST(req: Request) {
+  const date = new Date().valueOf();
   const request = await req.json();
-  const { message, user, date } = request;
-  console.log(message, user, date);
+  const { message, user } = request;
   await pusher.trigger("chat", "chat-event", {
     message,
     user,
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   });
   await connectDB();
   const newMessage = new model({
-    date: date,
+    date: new Date().valueOf(),
     message: message,
     user: user,
   });
